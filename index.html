@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rogério Lopes dos Santos — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F1F2ED;
+    --paper-2: #E8EAE3;
+    --ink: #16232B;
+    --ink-soft: #445056;
+    --teal: #2F6F6B;
+    --teal-dim: #DCE7E5;
+    --rust: #B5651D;
+    --line: #CDD3CA;
+    --display: 'Source Serif 4', serif;
+    --body: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--body); line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* --- Top nav (track switcher) --- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(241,242,237,0.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav .wrap{display:flex; align-items:center; justify-content:space-between; padding:14px 28px;}
+  .brand{font-family:var(--mono); font-size:13px; letter-spacing:0.02em; color:var(--ink-soft); text-decoration:none;}
+  .pills{display:flex; gap:8px; flex-wrap:wrap;}
+  .pill{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.02em;
+    padding:6px 12px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--ink-soft); cursor:pointer; text-decoration:none;
+    transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--teal); color:var(--teal);}
+  .pill.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  /* --- Landing --- */
+  #landing{min-height:calc(100vh - 53px); display:flex; align-items:center;}
+  .landing-inner{width:100%; padding:60px 0;}
+  .eyebrow{font-family:var(--mono); font-size:13px; color:var(--teal); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:18px;}
+  h1.question{
+    font-family:var(--display); font-weight:600; font-style:italic;
+    font-size:clamp(32px,5vw,54px); line-height:1.15; margin:0 0 40px; max-width:760px;
+  }
+  .options{display:flex; flex-wrap:wrap; gap:14px;}
+  .opt{
+    font-family:var(--mono); font-size:14px;
+    border:1px solid var(--ink); padding:14px 22px; border-radius:2px;
+    background:var(--paper); cursor:pointer; text-decoration:none; color:var(--ink);
+    position:relative; transition:background .18s ease, color .18s ease;
+  }
+  .opt:hover{background:var(--ink); color:var(--paper);}
+  .opt .tag{display:block; font-size:11px; color:var(--ink-soft); margin-top:4px;}
+  .opt:hover .tag{color:var(--paper-2);}
+
+  .vesicle-wrap{margin-top:56px; opacity:0.9;}
+
+  /* --- Track pages --- */
+  .track-page{display:none; padding:52px 0 90px;}
+  .track-page.active{display:block;}
+  .track-header{border-bottom:1px solid var(--line); padding-bottom:28px; margin-bottom:36px;}
+  .track-label{font-family:var(--mono); font-size:12px; color:var(--teal); text-transform:uppercase; letter-spacing:0.06em;}
+  h2.track-title{font-family:var(--display); font-size:clamp(26px,4vw,38px); margin:8px 0 10px;}
+  .track-tagline{color:var(--ink-soft); max-width:640px; font-size:16px;}
+
+  section.block{margin-bottom:42px;}
+  h3.block-title{
+    font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:18px;
+  }
+  .profile-text{max-width:680px; font-size:16px;}
+
+  .entry{display:grid; grid-template-columns:150px 1fr; gap:18px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .entry:last-child{border-bottom:none;}
+  .entry .when{font-family:var(--mono); font-size:12px; color:var(--ink-soft); padding-top:2px;}
+  .entry .what h4{margin:0 0 4px; font-size:16px; font-weight:600;}
+  .entry .what .org{font-size:13px; color:var(--ink-soft); font-style:italic; margin-bottom:8px;}
+  .entry .what ul{margin:0; padding-left:18px; font-size:14.5px;}
+  .entry .what li{margin-bottom:4px;}
+
+  .pubs{list-style:none; margin:0; padding:0;}
+  .pubs li{padding:12px 0; border-bottom:1px solid var(--line); font-size:14.5px;}
+  .pubs li:last-child{border-bottom:none;}
+  .pubs .venue{font-family:var(--mono); font-size:11px; color:var(--teal); text-transform:uppercase; letter-spacing:0.04em;}
+
+  .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag-chip{
+    font-family:var(--mono); font-size:12px; background:var(--teal-dim); color:var(--teal);
+    padding:5px 10px; border-radius:2px;
+  }
+
+  footer{border-top:1px solid var(--line); padding:28px 0; font-family:var(--mono); font-size:12px; color:var(--ink-soft);}
+
+  @media (max-width:640px){
+    .entry{grid-template-columns:1fr;}
+    .entry .when{padding-top:0;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <a href="#/" class="brand" data-nav="/">RLDS</a>
+    <div class="pills" id="navPills"></div>
+  </div>
+</nav>
+
+<section id="landing">
+  <div class="wrap landing-inner">
+    <div class="eyebrow">Rogério Lopes dos Santos — PhD Biophysicist</div>
+    <h1 class="question">Looking for a professional in&hellip;</h1>
+    <div class="options" id="landingOptions"></div>
+
+    <div class="vesicle-wrap">
+      <svg id="vesicle" width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="34" stroke="#16232B" stroke-width="1.4" fill="none"/>
+        <g id="filaments" stroke="#2F6F6B" stroke-width="1.6" stroke-linecap="round" fill="none"></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<main class="wrap" id="tracksContainer"></main>
+
+<footer>
+  <div class="wrap">London · lopessantos.rogerio@gmail.com · LinkedIn: Rogério Lopes dos Santos</div>
+</footer>
+
+<script>
+/* ---------------- DATA: one object per track. Add a new track = add one entry here. ---------------- */
+const TRACKS = [
+  {
+    id: "scientist",
+    label: "Scientist",
+    optionTag: "Research · Biophysics",
+    tagline: "PhD biophysicist reconstructing how cells change shape — actin, membranes, and synthetic biomimetic systems.",
+    profile: "PhD biophysicist specialising in cell mechanics and membrane biophysics. My doctoral work reconstructed branched actin networks on artificial cell membranes (giant unilamellar vesicles) to study how cells generate and control shape change — the same physical process underlying cell motility and division. I co-developed a microfluidic platform to run these experiments at scale, and separately investigated the role of a target protein in red blood cell maturation during my Master's research.",
+    experience: [
+      { when: "Feb 2019 – Nov 2023", title: "Research Associate / PhD Student", org: "Laboratory of Analysis, Modelling and Materials for Biology and Environment, Université Paris-Saclay",
+        bullets: [
+          "Reconstructed branched Arp2/3-nucleated actin networks on giant unilamellar vesicles (GUVs) to study actin-induced membrane deformation, including on phase-separated membranes with distinct lipid domains",
+          "Co-developed a microfluidic platform enabling higher-throughput, statistically robust GUV-based assays",
+          "Authored 4 peer-reviewed publications and a PhD thesis; presented at national and international conferences"
+        ]},
+      { when: "May 2018 – Jan 2019", title: "Research Assistant", org: "Institut Curie",
+        bullets: ["Designed and optimised experimental methods for reproducibility of actin-membrane assays", "Co-authored a peer-reviewed article, later cited more than 20 times"]},
+      { when: "Apr 2016 – Jul 2017", title: "Research Assistant — Internship", org: "Laboratory of Normal-Pathological Lymphocytes and Cancers",
+        bullets: ["Investigated the role of a target protein (GPX4) in red blood cell maturation and enucleation", "Secured €10,000 in competitive research funding", "Co-authored a peer-reviewed article in Blood Advances (2020)"]}
+    ],
+    publications: [
+      { venue: "Small Science, 2025", cite: "Huang, Lopes Dos Santos, et al. — A Microfluidic Platform for Actin-Based Membrane Remodeling Reveals the Stabilizing Role of Branched Actin Networks on Lipid Microdomains." },
+      { venue: "ACS Synthetic Biology, 2023", cite: "Lopes dos Santos, Malo, Campillo — Spatial Control of Arp2/3-Induced Actin Polymerization on Phase-Separated Giant Unilamellar Vesicles." },
+      { venue: "Biochemical Society Transactions, 2022 (Review)", cite: "Lopes dos Santos, Campillo — Studying actin-induced cell shape changes using Giant Unilamellar Vesicles and reconstituted actin networks." },
+      { venue: "Blood Advances, 2020", cite: "Ouled-Haddou, ..., Lopes dos Santos, et al. — A new role of glutathione peroxidase 4 during human erythroblast enucleation." }
+    ],
+    tagsList: ["Membrane biophysics", "Actin/cytoskeleton", "Microfluidics", "GUVs", "Synthetic biology", "Scientific writing"]
+  },
+  {
+    id: "clinical-research",
+    label: "Clinical Research",
+    optionTag: "CRA · Site Monitoring",
+    tagline: "PhD-trained scientist transitioning into clinical research, GCP certified, with hands-on trial data experience.",
+    profile: "PhD-trained biophysicist transitioning into clinical research, combining rigorous scientific training with hands-on experience in source data verification, regulatory documentation, and Good Clinical Practice. GCP certified, with direct exposure to clinical trial data verification during an internship at a University Hospital Clinical Research Centre.",
+    experience: [
+      { when: "Apr 2014", title: "Clinical Research Assistant — Internship", org: "Clinical Research Centre, University Hospital of Amiens",
+        bullets: ["Performed Source Data Verification (SDV), cross-checking CRF data against patient clinical notes", "Collaborated directly with a biostatistician to interpret and validate clinical trial results", "Authored a manuscript on the diagnostic potential of biomarkers in early cancer detection"]},
+      { when: "2024", title: "Certification", org: "NIHR",
+        bullets: ["Good Clinical Practice (GCP) certification"]},
+      { when: "Feb 2019 – Nov 2023", title: "PhD Research (transferable rigour)", org: "Université Paris-Saclay",
+        bullets: ["Independent, protocol-driven experimental design and data integrity practice across a 4+ year research programme"]}
+    ],
+    publications: [],
+    tagsList: ["GCP", "SDV / CRF review", "Protocol adherence", "Regulatory documentation", "Data integrity"]
+  },
+  {
+    id: "clinical-science",
+    label: "Clinical Science",
+    optionTag: "Industry · Translational",
+    tagline: "PhD biophysicist moving into clinical/translational science roles in industry.",
+    profile: "PhD biophysicist with a research background spanning cell biomechanics (how cells change shape) and blood cell biology, moving into clinical/translational science roles in industry. GCP certified, with hands-on clinical trial data experience from a University Hospital Research Centre internship. Strong record of independent research, peer-reviewed publication, and clear scientific communication to both specialist and general audiences.",
+    experience: [
+      { when: "Feb 2019 – Nov 2023", title: "Research Associate / PhD Student", org: "Université Paris-Saclay",
+        bullets: ["Built artificial cell models to study how the cell's internal scaffolding reshapes its outer membrane", "Co-developed a microfluidic device to scale up these experiments", "Authored 4 peer-reviewed publications and a PhD thesis"]},
+      { when: "Apr 2016 – Jul 2017", title: "Research Assistant — Internship", org: "Laboratory of Normal-Pathological Lymphocytes and Cancers",
+        bullets: ["Investigated the role of a target protein in red blood cell maturation", "Co-authored a peer-reviewed article"]},
+      { when: "Apr 2014", title: "Clinical Research Assistant — Internship", org: "University Hospital of Amiens",
+        bullets: ["Source Data Verification and CRF review in a real clinical trial environment"]}
+    ],
+    publications: [],
+    tagsList: ["Translational science", "GCP", "Cross-disciplinary communication", "Peer-reviewed research"]
+  },
+  {
+    id: "science-policy",
+    label: "Science Policy",
+    optionTag: "Governance · Strategy",
+    tagline: "PhD scientist bringing research rigour and organisational governance experience into science policy.",
+    profile: "PhD biophysicist with experience translating complex research for varied audiences, combined with hands-on governance and organisational experience. Bringing an evidence-based, structured approach to science policy work, informed by years of independent research management, cross-institutional coordination, and public communication of scientific findings.",
+    experience: [
+      { when: "Feb 2019 – Nov 2023", title: "Research Associate / PhD Student", org: "Université Paris-Saclay",
+        bullets: ["Coordinated with collaborators across institutions, managing timelines and deliverables", "Presented complex scientific findings to specialist and public audiences", "Authored and reviewed peer-reviewed publications for accuracy and clarity"]}
+    ],
+    publications: [],
+    tagsList: ["Science communication", "Governance", "Cross-institutional coordination", "Evidence synthesis"]
+  }
+];
+
+/* ---------------- RENDER ---------------- */
+const navPills = document.getElementById('navPills');
+const landingOptions = document.getElementById('landingOptions');
+const tracksContainer = document.getElementById('tracksContainer');
+
+TRACKS.forEach(t => {
+  const pill = document.createElement('a');
+  pill.href = `#/${t.id}`;
+  pill.className = 'pill';
+  pill.textContent = t.label;
+  pill.dataset.nav = t.id;
+  navPills.appendChild(pill);
+
+  const opt = document.createElement('a');
+  opt.href = `#/${t.id}`;
+  opt.className = 'opt';
+  opt.innerHTML = `${t.label}<span class="tag">${t.optionTag}</span>`;
+  landingOptions.appendChild(opt);
+
+  const page = document.createElement('div');
+  page.className = 'track-page';
+  page.id = `page-${t.id}`;
+
+  let pubsHtml = '';
+  if (t.publications.length) {
+    pubsHtml = `<section class="block"><h3 class="block-title">Publications</h3><ul class="pubs">` +
+      t.publications.map(p => `<li><div class="venue">${p.venue}</div>${p.cite}</li>`).join('') +
+      `</ul></section>`;
+  }
+
+  const expHtml = t.experience.map(e => `
+    <div class="entry">
+      <div class="when">${e.when}</div>
+      <div class="what">
+        <h4>${e.title}</h4>
+        <div class="org">${e.org}</div>
+        <ul>${e.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      </div>
+    </div>`).join('');
+
+  page.innerHTML = `
+    <div class="track-header">
+      <div class="track-label">${t.optionTag}</div>
+      <h2 class="track-title">${t.label}</h2>
+      <p class="track-tagline">${t.tagline}</p>
+    </div>
+    <section class="block">
+      <h3 class="block-title">Profile</h3>
+      <p class="profile-text">${t.profile}</p>
+    </section>
+    <section class="block">
+      <h3 class="block-title">Experience</h3>
+      ${expHtml}
+    </section>
+    ${pubsHtml}
+    <section class="block">
+      <h3 class="block-title">Skills</h3>
+      <div class="tags">${t.tagsList.map(tag => `<span class="tag-chip">${tag}</span>`).join('')}</div>
+    </section>
+  `;
+  tracksContainer.appendChild(page);
+});
+
+/* ---------------- ROUTER ---------------- */
+function route() {
+  const hash = location.hash.replace('#/', '') || '';
+  const isLanding = hash === '';
+  document.getElementById('landing').style.display = isLanding ? 'flex' : 'none';
+  tracksContainer.style.display = isLanding ? 'none' : 'block';
+
+  document.querySelectorAll('.track-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+
+  if (!isLanding) {
+    const page = document.getElementById(`page-${hash}`);
+    if (page) page.classList.add('active');
+    const pill = document.querySelector(`.pill[data-nav="${hash}"]`);
+    if (pill) pill.classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+route();
+
+/* ---------------- SIGNATURE ANIMATION: actin filaments growing on the vesicle ---------------- */
+function drawFilaments() {
+  const g = document.getElementById('filaments');
+  const cx = 60, cy = 60, r = 34;
+  const branchCount = 9;
+  let paths = [];
+  for (let i = 0; i < branchCount; i++) {
+    const angle = (i / branchCount) * Math.PI * 2 + Math.random() * 0.3;
+    const x1 = cx + Math.cos(angle) * r;
+    const y1 = cy + Math.sin(angle) * r;
+    const len = 10 + Math.random() * 14;
+    const branchAngle = angle + (Math.random() - 0.5) * 0.8;
+    const x2 = x1 + Math.cos(branchAngle) * len;
+    const y2 = y1 + Math.sin(branchAngle) * len;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    path.setAttribute('x1', x1); path.setAttribute('y1', y1);
+    path.setAttribute('x2', x1); path.setAttribute('y2', y1);
+    path.dataset.tx2 = x2; path.dataset.ty2 = y2;
+    path.style.opacity = 0;
+    g.appendChild(path);
+    paths.push(path);
+  }
+  paths.forEach((p, i) => {
+    setTimeout(() => {
+      p.style.transition = 'opacity .4s ease';
+      p.style.opacity = 1;
+      p.setAttribute('x2', p.dataset.tx2);
+      p.setAttribute('y2', p.dataset.ty2);
+      p.style.transitionProperty = 'opacity, x2, y2';
+      p.style.transitionDuration = '.6s';
+    }, i * 90);
+  });
+}
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  drawFilaments();
+} else {
+  document.getElementById('vesicle').style.display = 'none';
+}
+</script>
+</body>
+</html>
